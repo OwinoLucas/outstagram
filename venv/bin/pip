@@ -1,4 +1,4 @@
-#!/home/lucas/Documents/outstagram/venv/bin/python
+#!/home/lucas/Documents/OutstaGram/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
