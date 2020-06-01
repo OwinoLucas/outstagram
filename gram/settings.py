@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'outstagram.apps.OutstagramConfig',
     'bootstrap4',
-    'django_registration',
     'users.apps.UsersConfig',
     'crispy_forms',
 ]
