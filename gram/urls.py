@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'',include('outstagram.urls')),
     url(r'^accounts/', include('django_registration.backends.one_step.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+   
     
   
 ]

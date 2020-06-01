@@ -8,13 +8,13 @@ class Profile(models.Model):
     class facilitates the creation of profile objects
     """
     bio = models.CharField(max_length=70)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    profile_pic = models.ImageField(upload_to='profiles/')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(default = 'default.jpg',upload_to='profiles/')
     def __str__(self):
         """
         function returns informal representations of the models' objects
         """
-        return self.user
+        return f'{self.user.username} Profile'
 
     def save_profile(self):
         """
@@ -39,7 +39,8 @@ class Profile(models.Model):
         """
         self.delete()
 
-
+    
+#Image class kwa lms
 class Post(models.Model):
     """
     class containing post objects
@@ -51,6 +52,17 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.author.username} post'
+
+    @classmethod
+    def display_posts(cls):
+        posts = cls.objects.all()
+        return posts
+
+    @classmethod
+    def search_user_by_profile(cls,user_search):
+        author_details = cls.objects.filter(profile__user__icontains=user_search)
+        return author_details
+
 
 
 class Comment(models.Model):

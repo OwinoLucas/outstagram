@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http  import HttpResponse,Http404
 from django.contrib.auth.decorators import login_required
-
+from .models import Post,Profile,Comment
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
@@ -11,8 +11,21 @@ def index(request):
     """
     return render(request, 'index.html')
 
-# def login(request):
-#     """
-#     view function renders the template that contains the login form
-#     """
-#     return render(request, 'registration/login.html')
+def search_results(request):
+    """
+    view function returns the searched categories
+    """
+    if 'profile' in request.GET and request.GET["profile"]:
+        user_search = request.GET.get("profile")
+        searched_users = Post.search_user_by_profile(user_search)
+        message = f"{user_search}"
+
+        return render(request, 'search.html',{"message":message,"users": searched_users})
+
+    else:
+        message = "You haven't searched for any user"
+        return render(request, 'search.html',{"message":message})
+
+@login_required(login_url='/accounts/login/')
+def profile(request):
+    return render(request, 'profile.html')
