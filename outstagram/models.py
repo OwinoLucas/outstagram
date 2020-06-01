@@ -1,5 +1,6 @@
 from django.db import models
-from  django.contrib.auth.models import User
+from django.contrib.auth.models import User
+import datetime as dt
 from PIL import Image
 
 # Create your models here.
@@ -52,8 +53,10 @@ class Post(models.Model):
     class containing post objects
     """
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='posts')
+    image = models.ImageField(blank=True,upload_to='posts/')
+    image_name = models.CharField(max_length=30, null=True)
     caption = models.CharField(max_length=255)
+    pub_date = models.DateTimeField(auto_now_add=True, null=True)
     likes = models.IntegerField(default=0)
 
     def __str__(self):
@@ -69,6 +72,29 @@ class Post(models.Model):
         author_details = cls.objects.filter(profile__user__icontains=user_search)
         return author_details
 
+    def save_post(self):
+        """
+        method saves added post object
+        """
+        self.save()
+
+    def update_post(self, using=None, fields=None, **kwargs):
+        """
+        method updates saved post
+        """
+        if fields is not None:
+            fields = set(fields)
+            deferred_fields = self.get_deferred_fields()
+            if fields.intersection(deferred_fields):
+                fields = fields.union(deferred_fields)
+        super().refresh_from_db(using, fields, **kwargs)
+
+    def delete_post(self):
+        """
+        method deletes saved post object
+        """
+        self.delete()
+
 
 
 class Comment(models.Model):
@@ -76,7 +102,7 @@ class Comment(models.Model):
     class containing comment objects
     """
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.Case)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     body = models.TextField(max_length=500, blank=False)
 
     def __str__(self):
