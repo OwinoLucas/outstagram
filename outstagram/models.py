@@ -46,6 +46,11 @@ class Profile(models.Model):
         """
         self.delete()
 
+    @classmethod
+    def get_user_by_profile(cls,user_search):
+        profile = cls.objects.filter(user__username__icontains=user_search)
+        return profile
+
     
 #Image class kwa lms
 class Post(models.Model):
@@ -67,10 +72,6 @@ class Post(models.Model):
         posts = cls.objects.all()
         return posts
 
-    @classmethod
-    def search_user_by_profile(cls,user_search):
-        author_details = cls.objects.filter(profile__user__icontains=user_search)
-        return author_details
 
     def save_post(self):
         """

@@ -17,11 +17,11 @@ def index(request):
 
 def search_results(request):
     """
-    view function returns the searched categories
+    view function returns the searched users
     """
     if 'profile' in request.GET and request.GET["profile"]:
         user_search = request.GET.get("profile")
-        searched_users = Post.search_user_by_profile(user_search)
+        searched_users = Profile.get_user_by_profile(user_search)
         message = f"{user_search}"
 
         return render(request, 'search.html',{"message":message,"users": searched_users})

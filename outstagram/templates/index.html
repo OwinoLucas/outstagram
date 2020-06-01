@@ -23,10 +23,10 @@
             <div class="card-img">
                 <img class='img-responsive' style="padding-top:10px;width:100%" class="card-img-top"
                     src="{{post.image.url}}" alt="post">
-                <blockquote class="blockquote">
+                <blockquote class="blockquote" style='padding-left:20px; '>
                     <p class="mb-0">{{post.image_name}}</p>
-                    <p class="mb-0">{{post.caption}}</p>
-                    <small>{{ post.likes}}</small>
+                    <p class="mb-0"><strong>{{post.author.profile.user}}</strong>
+                        {{post.caption}}</p>
                     <footer class="blockquote-footer">{{post.pub_date}}</footer>
                 </blockquote>
             </div>

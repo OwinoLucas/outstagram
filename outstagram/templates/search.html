@@ -4,14 +4,22 @@
 <div class="container">
 
     {% if users %}
-    <h2 class="text-center"> Didn't find {{ users | length }} by that username</h2>
+    <h2 class="text-center"> Found {{ users | length }} user by the name {{ message}}</h2>
+    {% else %}
+    <h2 style="margin-left: 250px;"> Found 0 profiles for the search term {{message}}</h2>
     {% endif %}
 
     <div class="card-columns">
         {% if users %}
         {% for user in users %}
-        <img src="{{user.image.url}}" alt="{{ user.author }}" class="card-img">
-        {{% endfor %}}
+        <img src="{{user.profile_pic.url}}" alt="" class="rounded-circle account-img" width="125px" height="125px">
+        <div class="card-body">
+            <blockquote class="blockquote">
+                <p class="mb-0">{{user.user.username}}</p>
+                <footer class="blockquote-footer">{{user.bio}} </footer>
+            </blockquote>
+        </div>
+        {% endfor %}
         {% endif %}
     </div>
 
