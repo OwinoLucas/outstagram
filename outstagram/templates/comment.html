@@ -1,0 +1,47 @@
+{%extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container top">
+    <div class="row">
+        <div class="col-md-7" style="font-size:23px;">
+            <p class="home-text">
+                <a href="{% url 'profile' username=post.author.user.username %}">{{post.author.user.username}}</a>
+            </p>
+            <img src="{{post.image.url}}" alt="Post" class="img-responsive"
+                style="height:400px;width:400px;border-radius:20px;">
+            <p>{{post.caption}} </p>
+
+            <hr>
+            <div>
+                {% for comment in comments %}
+                <div class="row">
+                    <div class="col-md-10">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a
+                                    href="{% url 'profile' username=comment.user.username %}">{{comment.user.username}}</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <p>{{comment.body}} </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3>There are no comments</h3>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <form action="{% url 'post_comment'  %}" method="POST">
+                {% csrf_token %}
+                {% c_form|crispy %}
+                <button class="btn btn-outline-info" type="submit">Comment</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

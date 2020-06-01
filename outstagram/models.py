@@ -51,6 +51,13 @@ class Profile(models.Model):
         profile = cls.objects.filter(user__username__icontains=user_search)
         return profile
 
+    @classmethod
+    def get_profile_by_id(cls, id):
+        """
+        methods gets and returns a profile with a given id
+        """
+        profile = Profile.objects.get(pk=id)
+        return profile
     
 #Image class kwa lms
 class Post(models.Model):
@@ -59,7 +66,7 @@ class Post(models.Model):
     """
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(blank=True,upload_to='posts/')
-    image_name = models.CharField(max_length=30, null=True)
+    image_name = models.CharField(max_length=30, default='default')
     caption = models.CharField(max_length=255)
     pub_date = models.DateTimeField(auto_now_add=True, null=True)
     likes = models.IntegerField(default=0)
@@ -70,6 +77,11 @@ class Post(models.Model):
     @classmethod
     def display_posts(cls):
         posts = cls.objects.all()
+        return posts
+
+    @classmethod
+    def get_post(cls,pk):
+        posts = cls.objects.get(pk=pk)
         return posts
 
 
@@ -114,3 +126,18 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.body
+
+    @classmethod
+    def get_comment(cls,id):
+        comments = cls.objects.all()
+        return comments
+
+    @classmethod
+    def get_post_comment(cls,pk):
+        post = Post.get_single_post(pk)
+        comments = []
+        all_comments = Comments.objects.filter(image_id=post.id).all()
+        comments += all_comments
+        comment_count = len(comments)
+        
+        return comments

@@ -29,11 +29,12 @@
                         {{post.caption}}</p>
                     <footer class="blockquote-footer">{{post.pub_date}}</footer>
                 </blockquote>
+
+                <button class="btn btn-outline-info"><a href="{% url 'post_comment' %}"></a>Comment</button>
+
             </div>
 
-            <div class="card-footer">
-                <!-- comments section -->
-            </div>
+
         </div>
     </div>
 </div>

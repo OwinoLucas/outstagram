@@ -2,9 +2,10 @@ from django.shortcuts import render,redirect
 from django.http  import HttpResponse,Http404
 from django.contrib.auth.decorators import login_required
 from .models import Post,Profile,Comment
-from .forms import UserUpdateForm,ProfileUpdateForm
+from .forms import UserUpdateForm,ProfileUpdateForm,CommentForm,PostForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 @login_required(login_url='login')
@@ -50,3 +51,55 @@ def profile(request):
         'p_form': p_form
     }
     return render(request, 'profile.html', context)
+
+# @login_required(login_url='login')
+# def user_profile(request,author_id):
+#     try:
+#         profiles = Profile.get_profile_by_id(id=author_id)
+#         print(profile)
+#     except ObjectDoesNotExist:
+#         raise Http404()
+#         raise False
+
+#     return render(request, 'profiles.html', {'profiles':profiles})
+
+@login_required(login_url='login')
+def post_comment(request,pk):
+    post = Post.get_post(pk)
+    comments = Comment.get_comment(post.id)
+    if request.method == 'POST':
+        c_form = CommentForm(request.POST,instance=request.user)
+        if c_form.is_valid():
+            comment = c_form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('post_comment', post_id = post_id)
+    else:
+        c_form = CommentForm(instance=request.user)
+
+    context = {
+        'c_form':c_form,
+        'comments':comments,
+        'post':post
+    }
+    return render(request, 'comment.html', context)
+
+@login_required(login_url='login')      
+def upload_post(request):
+    """
+    view functon displays the upload post form
+    """
+    profiles = Profile.objects.all()
+    current_user = request.user.profile
+    for profile in profiles:
+        if profile.user.id == request.user.id:
+            if request.method == 'POST':
+                form = PostForm(request.POST, request.FILES)
+                if form.is_valid():
+                    post = form.save(commit=False)
+                    post.profile = current_user
+                    post.save()
+                return redirect('profile', profile_id=profile.id)
+            else:
+                form = PostForm()
+    return render(request, 'upload_post.html', {'form':form, 'profiles':profiles})
