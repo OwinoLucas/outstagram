@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post,Profile,Comment
 from .forms import UserUpdateForm,ProfileUpdateForm
 from django.contrib import messages
-
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required(login_url='login')
@@ -12,7 +12,8 @@ def index(request):
     """
     view function renders the landing page
     """
-    return render(request, 'index.html')
+    posts = Post.display_posts()
+    return render(request, 'index.html', {'posts':posts})
 
 def search_results(request):
     """

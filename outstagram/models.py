@@ -76,7 +76,13 @@ class Post(models.Model):
         """
         method saves added post object
         """
-        self.save()
+        super().save()
+
+        img = Image.open(self.image.path)
+        if img.height > 575 or img.width > 560:
+            output_size = (575,560)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
     def update_post(self, using=None, fields=None, **kwargs):
         """

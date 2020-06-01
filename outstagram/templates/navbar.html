@@ -1,41 +1,37 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Oustagram</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+        aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <div class="col-sm-6 col-md-6">
+    <div class="collapse navbar-collapse" id="navbarColor01">
         {% if user.is_authenticated %}
-        <ul>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button"
-                    aria-expanded="false">Account
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="{%url 'index'%}">Home</a>
-                    </li>
-                    <li>
-                        <a href="{%url 'profile'%}">profile</a>
-                    </li>
-                    <li>
-                        <a href="{%url 'logout'%}">Logout</a>
-                    </li>
-                </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{%url 'index'%}"><strong>Home </strong><span
+                        class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{%url 'profile'%}"><strong>Profile</strong></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{%url 'logout'%}"><strong>Log Out</strong></a>
             </li>
         </ul>
         {% else %}
-        <li>
-            <a class='btn btn-default' href="{%url 'login'%}">Login</a>
-            <a class='btn btn-default' href="{%url 'register'%}">Register</a>
-        </li>
-
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class='btn btn-default' href="{%url 'login'%}" style="color: white;"><strong>Login</strong></a>
+            </li>
+            <li class="nav-item">
+                <a class='btn btn-default' href="{%url 'register'%}" style="color: white;"><strong>Register</strong></a>
+            </li>
+        </ul>
         {% endif %}
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </div>
-    <!--search form-->
-    <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <!--end of search form-->
-
-
 </nav>
