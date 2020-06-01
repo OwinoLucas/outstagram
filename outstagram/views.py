@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post,Profile,Comment
 
 # Create your views here.
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='login')
 def index(request):
     """
     view function renders the landing page
@@ -26,6 +26,3 @@ def search_results(request):
         message = "You haven't searched for any user"
         return render(request, 'search.html',{"message":message})
 
-@login_required(login_url='/accounts/login/')
-def profile(request):
-    return render(request, 'profile.html')
