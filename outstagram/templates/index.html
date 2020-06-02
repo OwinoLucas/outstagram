@@ -25,7 +25,7 @@
                     src="{{post.image.url}}" alt="post">
                 <blockquote class="blockquote" style='padding-left:20px; '>
                     <p class="mb-0">{{post.image_name}}</p>
-                    <p class="mb-0"><strong>{{post.author.profile.user}}</strong>
+                    <p class="mb-0"><strong><i class="icon-user"></i> {{post.author.profile.user}}</strong>
                         {{post.caption}}</p>
                     <i class="icon-heart icon-1x"> Like</i> <a href="{% url 'post_comment'  %}"><i
                             class="icon-comments icon-1x"> Comment</i></a>

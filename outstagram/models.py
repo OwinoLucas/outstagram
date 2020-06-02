@@ -127,6 +127,18 @@ class Comment(models.Model):
     def __str__(self):
         return self.body
 
+    def save_comment(self):
+        """
+        method saves added comment
+        """
+        self.save()
+    
+    def delete_comment(self):
+        """
+        method deletes saved comment
+        """
+        self.delete()
+
     @classmethod
     def get_comment(cls,id):
         comments = cls.objects.filter(image__pk=id)
