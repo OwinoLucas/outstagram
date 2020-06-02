@@ -14,7 +14,8 @@ def index(request):
     view function renders the landing page
     """
     posts = Post.display_posts()
-    return render(request, 'index.html', {'posts':posts})
+    comments = Comment.objects.all()
+    return render(request, 'index.html', {'posts':posts, 'comments':comments})
 
 def search_results(request):
     """
@@ -64,25 +65,21 @@ def profile(request):
 #     return render(request, 'profiles.html', {'profiles':profiles})
 
 @login_required(login_url='login')
-def post_comment(request,pk):
-    post = Post.get_post(pk)
-    comments = Comment.get_comment(post.id)
+def post_comment(request,post_id):
+    post = get_object_or_404(Post, id =post_id)
+    current_user = request.user
     if request.method == 'POST':
-        c_form = CommentForm(request.POST,instance=request.user)
+        c_form = CommentForm(request.POST, request.FILES)
         if c_form.is_valid():
             comment = c_form.save(commit=False)
+            comment.user = current_user
             comment.post = post
             comment.save()
-            return redirect('post_comment', post_id = post_id)
+            return redirect('index')
     else:
-        c_form = CommentForm(instance=request.user)
-
-    context = {
-        'c_form':c_form,
-        'comments':comments,
-        'post':post
-    }
-    return render(request, 'comment.html', context)
+        c_form = CommentForm()
+  
+    return render(request, 'comment.html', {'c_form':c_form, 'post_id':post_id})
 
 @login_required(login_url='login')      
 def upload_post(request):
@@ -99,7 +96,7 @@ def upload_post(request):
                     post = form.save(commit=False)
                     post.profile = current_user
                     post.save()
-                return redirect('profile', profile_id=profile.id)
+                return redirect('upload_post', author_id=author.id)
             else:
                 form = PostForm()
     return render(request, 'upload_post.html', {'form':form, 'profiles':profiles})

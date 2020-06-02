@@ -27,11 +27,18 @@
                     <p class="mb-0">{{post.image_name}}</p>
                     <p class="mb-0"><strong>{{post.author.profile.user}}</strong>
                         {{post.caption}}</p>
+                    <i class="icon-heart icon-1x"> Like</i> <a href="{% url 'post_comment'  %}"><i
+                            class="icon-comments icon-1x"> Comment</i></a>
                     <footer class="blockquote-footer">{{post.pub_date}}</footer>
+
                 </blockquote>
 
-                <button class="btn btn-outline-info"><a href="{% url 'post_comment' %}"></a>Comment</button>
 
+                <div class="card-footer">
+                    {% for comment in comments %}
+                    <p>{{comment.user.username}} - {{comment.body}} </p>
+                    {% endfor %}
+                </div>
             </div>
 
 

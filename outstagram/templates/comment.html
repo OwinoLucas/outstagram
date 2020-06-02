@@ -35,7 +35,7 @@
                 </div>
                 {% endfor %}
             </div>
-            <form action="{% url 'post_comment'  %}" method="POST">
+            <form action="{% url 'post_comment' image.id  %}" method="POST">
                 {% csrf_token %}
                 {% c_form|crispy %}
                 <button class="btn btn-outline-info" type="submit">Comment</button>

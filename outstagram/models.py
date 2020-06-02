@@ -129,7 +129,7 @@ class Comment(models.Model):
 
     @classmethod
     def get_comment(cls,id):
-        comments = cls.objects.all()
+        comments = cls.objects.filter(image__pk=id)
         return comments
 
     @classmethod
