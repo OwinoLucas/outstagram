@@ -14,18 +14,24 @@ def index(request):
     view function renders the landing page
     """
     posts = Post.display_posts()
-    # comments = Comment.objects.all()
+    comments = Comment.objects.all()
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES,instance=request.user.profile)
+        form = CommentForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-        return HttpResponseRedirect(request.path_info)
+            comment = form.save(commit=False)
+            comment.user = current_user
+            comment.post = post
+            comment.save()
+            return redirect('index')
+        
     else:
-        form = PostForm(instance=request.user.profile)
-        
-        
-    return render(request, 'index.html', {'posts':posts, 'form':form})
+        form = CommentForm()
+    
+    context = {
+        'form': form,
+        'posts':posts
+    }
+    return render(request, 'index.html', context)
 
 def search_results(request):
     """
@@ -45,7 +51,7 @@ def search_results(request):
         
 @login_required(login_url='login')
 def profile(request):
-   # posts = request.user.username.author.all()
+    posts = request.user.username.all()
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST,instance=request.user)
         p_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
@@ -61,7 +67,7 @@ def profile(request):
     context = {
         'u_form': u_form,
         'p_form': p_form,
-        #'posts':posts
+        'posts':posts
         
     }
     return render(request, 'profile.html', context)
@@ -102,7 +108,7 @@ def upload_post(request):
     view functon displays the upload post form
     """
     profiles = Profile.objects.all()
-    current_user = request.user
+    current_user = request.user.profile
     for profile in profiles:
         if profile.user.id == request.user.id:
             if request.method == 'POST':
