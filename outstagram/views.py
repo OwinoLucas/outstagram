@@ -111,6 +111,7 @@ def upload_post(request):
                     post = form.save(commit=False)
                     post.profile = current_user
                     post.save()
+                    messages.success(request, f'Your post has been uploaded!')
                 return redirect('index')
             else:
                 form = PostForm()
