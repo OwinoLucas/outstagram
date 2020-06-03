@@ -2,6 +2,7 @@ h1 {
     color: green;
 }
 
-body {
-    background-color: #e2f3f5;
+.modal-fade {
+    width: 750px;
+    margin: auto;
 }

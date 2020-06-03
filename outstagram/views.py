@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from django.http  import HttpResponse,Http404
+from django.shortcuts import render,redirect,get_object_or_404
+from django.http  import HttpResponse,Http404, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Post,Profile,Comment
 from .forms import UserUpdateForm,ProfileUpdateForm,CommentForm,PostForm
@@ -14,8 +14,18 @@ def index(request):
     view function renders the landing page
     """
     posts = Post.display_posts()
-    comments = Comment.objects.all()
-    return render(request, 'index.html', {'posts':posts, 'comments':comments})
+    # comments = Comment.objects.all()
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES,instance=request.user.profile)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+        return HttpResponseRedirect(request.path_info)
+    else:
+        form = PostForm(instance=request.user.profile)
+        
+        
+    return render(request, 'index.html', {'posts':posts, 'form':form})
 
 def search_results(request):
     """
@@ -35,6 +45,7 @@ def search_results(request):
         
 @login_required(login_url='login')
 def profile(request):
+   # posts = request.user.username.author.all()
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST,instance=request.user)
         p_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
@@ -49,20 +60,24 @@ def profile(request):
 
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        #'posts':posts
+        
     }
     return render(request, 'profile.html', context)
 
 # @login_required(login_url='login')
-# def user_profile(request,author_id):
-#     try:
-#         profiles = Profile.get_profile_by_id(id=author_id)
-#         print(profile)
-#     except ObjectDoesNotExist:
-#         raise Http404()
-#         raise False
+# def user_profile(request,username):
+#     prof = get_object_or_404(User, username=username)
+#     if request.user == prof:
+#         return redirect('profile', username=request.user.username)
+#     post = prof.user.posts.all()
+#     context = {
+#         'prof':prof,
+#         'post':post
+#     }
 
-#     return render(request, 'profiles.html', {'profiles':profiles})
+#     return render(request, 'profiles.html',context)
 
 @login_required(login_url='login')
 def post_comment(request,post_id):
@@ -87,7 +102,7 @@ def upload_post(request):
     view functon displays the upload post form
     """
     profiles = Profile.objects.all()
-    current_user = request.user.profile
+    current_user = request.user
     for profile in profiles:
         if profile.user.id == request.user.id:
             if request.method == 'POST':
@@ -96,7 +111,7 @@ def upload_post(request):
                     post = form.save(commit=False)
                     post.profile = current_user
                     post.save()
-                return redirect('upload_post', author_id=author.id)
+                return redirect('index')
             else:
                 form = PostForm()
     return render(request, 'upload_post.html', {'form':form, 'profiles':profiles})

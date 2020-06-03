@@ -31,6 +31,9 @@
                 <button class="btn btn-outline-info" type="submit">Update</button>
             </div>
         </form>
+        {% for post in posts %}
+        <img src="{{post.image.url}}">
+        {% endfor%}
     </div>
 </div>
 

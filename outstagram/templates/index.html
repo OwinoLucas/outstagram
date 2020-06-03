@@ -1,13 +1,16 @@
 {%extends 'base.html'%}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 
-{% for post in posts %}
-<div style='padding-top:100px;' class="container">
+
+<div style='padding-top:50px;' class="container">
+
     <div class="row">
+        {% for post in posts %}
         <div style='box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);background-color:white;margin:auto;width:65%;'
             class="card-img">
+
             <div style='padding-left:20px; '>
                 {% if post.author.profile.profile_pic %}
                 <img src="{{post.author.profile.profile_pic.url}}" class="article-img mb-1 mt-2" width="50px"
@@ -43,8 +46,9 @@
 
 
         </div>
+        {%endfor %}
     </div>
 </div>
-{%endfor %}
+
 
 {% endblock %}

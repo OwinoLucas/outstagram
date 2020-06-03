@@ -64,9 +64,9 @@ class Post(models.Model):
     """
     class containing post objects
     """
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True, blank=True)
     image = models.ImageField(blank=True,upload_to='posts/')
-    image_name = models.CharField(max_length=30, default='default')
+    image_name = models.CharField(max_length=30, blank=True)
     caption = models.CharField(max_length=255)
     pub_date = models.DateTimeField(auto_now_add=True, null=True)
     likes = models.IntegerField(default=0)
@@ -83,19 +83,16 @@ class Post(models.Model):
     def get_post(cls,pk):
         posts = cls.objects.get(pk=pk)
         return posts
-
+    
+    class Meta:
+        ordering = ["-pk"]
 
     def save_post(self):
         """
         method saves added post object
         """
-        super().save()
+        self.save()
 
-        img = Image.open(self.image.path)
-        if img.height > 575 or img.width > 560:
-            output_size = (575,560)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
 
     def update_post(self, using=None, fields=None, **kwargs):
         """
