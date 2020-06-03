@@ -10,6 +10,8 @@ urlpatterns=[
     url(r'^profile/', views.profile, name= 'profile'),
     url(r'^comment/<int:post_id>/', views.post_comment, name= 'post_comment'),
     url(r'^upload_post/', views.upload_post, name='upload'),
+    url(r'unfollow/<to_unfollow>', views.unfollow, name='unfollow'),
+    url(r'follow/<to_follow>', views.follow, name='follow')
     # url(r'^user_profile/<username>/', views.user_profile, name= 'user_profile')
    
 ]

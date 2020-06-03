@@ -29,7 +29,8 @@ def index(request):
     
     context = {
         'form': form,
-        'posts':posts
+        'posts':posts,
+        'comments':comments
     }
     return render(request, 'index.html', context)
 
@@ -122,3 +123,18 @@ def upload_post(request):
             else:
                 form = PostForm()
     return render(request, 'upload_post.html', {'form':form, 'profiles':profiles})
+
+def unfollow(request, to_unfollow):
+    if request.method == 'GET':
+        user_profile2 = Profile.objects.get(pk=to_unfollow)
+        unfollow_d = Follow.objects.filter(follower=request.user.profile, followed=user_profile2)
+        unfollow_d.delete()
+        return redirect('index', user_profile2.user.username)
+
+
+def follow(request, to_follow):
+    if request.method == 'GET':
+        user_profile3 = Profile.objects.get(pk=to_follow)
+        follow_s = Follow(follower=request.user.profile, followed=user_profile3)
+        follow_s.save()
+        return redirect('index', user_profile3.user.username)
