@@ -4,7 +4,13 @@
 A clone of the website for the popular photo app Instagram.
 ## Screenshots of the app
 * Home page
-
+![Screenshot from 2020-06-04 02-06-13](https://user-images.githubusercontent.com/60548928/83697687-56892880-a608-11ea-8fcb-b6b3e8e3ad55.png)
+* Comment modal
+![Screenshot from 2020-06-04 02-06-21](https://user-images.githubusercontent.com/60548928/83697698-5f79fa00-a608-11ea-8aa3-ada6c49cfd88.png)
+* Search page
+![Screenshot from 2020-06-04 02-06-28](https://user-images.githubusercontent.com/60548928/83697704-643eae00-a608-11ea-97cb-db305cd762bc.png)
+* Upload Post Page
+![Screenshot from 2020-06-04 02-06-52](https://user-images.githubusercontent.com/60548928/83697709-686acb80-a608-11ea-8e12-48f9f2702fd2.png)
 ## User Story
 * Sign in to the application to start using.
 * Upload my pictures to the application.
