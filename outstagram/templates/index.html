@@ -2,12 +2,12 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
+{% for post in posts %}
 
 <div style='padding-top:50px;' class="container">
 
     <div class="row">
-        {% for post in posts %}
+
         <div style='box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);background-color:white;margin:auto;width:65%;'
             class="card-img">
 
@@ -67,18 +67,14 @@
                 </div>
 
 
-                <div class="card-footer">
-                    {% for comment in comments %}
-                    <p>{{comment.user.username}} - {{comment.body}} </p>
-                    {% endfor %}
-                </div>
+
             </div>
 
 
         </div>
-        {%endfor %}
+
     </div>
 </div>
 
-
+{%endfor %}
 {% endblock %}
