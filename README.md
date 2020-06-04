@@ -51,7 +51,7 @@ A clone of the website for the popular photo app Instagram.
 | User clicks on the like button                | The page reloads                                                                         | Like count of the post is increased by one value                                                                                       |
 | User clicks on the comment button             | A modal appears with a comment form | The comment is stored in post                                                                                         |
 ## Link to live site
-[](link)
+[https://outstagram101.herokuapp.com/](link)
 ## License
 Copyright (c) [2020] [Lucas Otieno]
 
